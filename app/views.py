@@ -5,9 +5,11 @@ Werkzeug Documentation:  https://werkzeug.palletsprojects.com/
 This file contains the routes for your application.
 """
 
-from app import app
+from app import app, db
+from app.models import Property
+from app.forms import PropertyForm
+from werkzeug.utils import secure_filename
 from flask import render_template, request, redirect, url_for
-
 
 ###
 # Routing for your application.
@@ -18,11 +20,40 @@ def home():
     """Render website's home page."""
     return render_template('home.html')
 
-
 @app.route('/about/')
 def about():
     """Render the website's about page."""
     return render_template('about.html', name="Mary Jane")
+
+@app.route('/properties')
+def properties():
+    files = []
+    return render_template("properties.html", files=files)
+
+@app.route('/properties/create', methods=['GET', 'POST'])
+def create():
+    form = PropertyForm()
+    if form.validate_on_submit():
+        title = form.title.data
+        numBedrms = form.numBedrms.data
+        numBathrms = form.numBathrms.data
+        location = form.location.data
+        price = form.price.data
+        propType = form.propType.data
+        description = form.description.data
+        photo = form.photo.data
+        filename = secure_filename(photo.filename)
+        photo.save(os.path.join(
+            app.config["UPLOAD_FOLDER"],
+            filename))
+        flask("Successfully Added "+title)
+        
+        return render_template(url_for('properties'))
+    return render_template("create.html", form=form)
+
+
+# @app.route('/properties/<propertyid>')
+# def property(propertyid):
 
 
 ###
@@ -44,7 +75,6 @@ def send_text_file(file_name):
     file_dot_text = file_name + '.txt'
     return app.send_static_file(file_dot_text)
 
-
 @app.after_request
 def add_header(response):
     """
@@ -55,7 +85,6 @@ def add_header(response):
     response.headers['X-UA-Compatible'] = 'IE=Edge,chrome=1'
     response.headers['Cache-Control'] = 'public, max-age=0'
     return response
-
 
 @app.errorhandler(404)
 def page_not_found(error):
