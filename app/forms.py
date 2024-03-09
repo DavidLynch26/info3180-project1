@@ -10,8 +10,8 @@ class PropertyForm(FlaskForm):
     location = StringField('Location', validators=[InputRequired()])
     price = StringField('Price', validators=[InputRequired()])
     propType = SelectField(u'Property Type',
-    choices=[('ap', 'Apartment'),
-    ('ho', 'House')])
+    choices=[('apartment', 'Apartment'),
+    ('house', 'House')])
     description = StringField('Description', validators=[InputRequired()])
     photo = FileField('Photo', validators=[
     FileRequired(),
