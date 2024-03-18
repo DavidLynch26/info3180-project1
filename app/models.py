@@ -12,7 +12,7 @@ class Property(db.Model):
     price = db.Column(db.Float)
     propType = db.Column(db.String(10))
     description = db.Column(db.String(300))
-    fileName = db.Column(db.String(128), unique=True)
+    fileName = db.Column(db.String(128))
 
     def __init__ (self, title, numBedrms, numBathrms, location, price, propType, description, fileName):
         self.title = title

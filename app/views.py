@@ -51,7 +51,7 @@ def create():
             filename))
         db.session.add(property_)
         db.session.commit()
-        flash("Successfully Added "+title)
+        flash("Successfully Added")
         return redirect(url_for('properties'))
     return render_template("create.html", form=form)
 
