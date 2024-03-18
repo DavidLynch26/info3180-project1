@@ -35,6 +35,7 @@ label {
     color: white;
     background-color: purple;
     margin-top: auto;
+    /* border */
 }
 
 .property-container img {
